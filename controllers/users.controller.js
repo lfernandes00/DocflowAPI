@@ -25,6 +25,7 @@ const signup = async (req, res) => {
             uploadCount: 0,
             photo: ""
         });
+        return res.status(201).json({message: "User created with success!"});
 
     }
     catch (err) {

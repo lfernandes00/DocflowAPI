@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Model = require('../models/documents.model');
 const Document = Model.Document;
+const Model2 = require('../models/users.model');
+const User = Model2.User;
 
 const create = (req, res) => {
     const newDocument = {
@@ -28,13 +30,16 @@ const create = (req, res) => {
 }
 
 const listById = (req, res) => {
-    Document.findOne({where: {id: req.params.documentId},
-        include: [
-            {
-                model: documentType, attributes: ["name"] // remove ALL data retrieved from join table
-            }
-        ]
-    })
+    Document.findOne(
+        {
+            where: {
+                id: req.params.documentId
+            },
+            include: {
+                model: User, 
+                attributes: ['id']
+            } 
+        })
         .then((document) => {
             if (document === null) {
                 res.status(404).json({message: `Document with id ${req.params.documentId} not found!`});

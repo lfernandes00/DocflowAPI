@@ -3,6 +3,7 @@ const sequelize = new Sequelize.Sequelize('joaoferr_ESMAPP_21_22_GRP2', 'joaofer
     host: 'www.joaoferreira.eu', 
     dialect: 'mysql'
 })
+const Document = require('./documents.model');
 
 class User extends Model {}
 
@@ -17,6 +18,8 @@ User.init({
     uploadCount: DataTypes.INTEGER,
     photo: DataTypes.STRING
 }, { sequelize, modelName: 'user'})
+
+Document.Document.belongsTo(User);
 
 sequelize.sync().then().catch(error => {
     console.log(error); 
