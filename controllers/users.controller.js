@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Model = require('../models/users.model');
-const utilities = require('../utilities/utilities');
 const User = Model.User;
+const config = require('../config/auth.config');
 
 const signup = async (req, res) => {
     try {
@@ -25,7 +25,7 @@ const signup = async (req, res) => {
             uploadCount: 0,
             photo: ""
         });
-        return res.status(201).json({message: "User created with success!"});
+        return res.status(201).json({ message: "User created with success!" });
 
     }
     catch (err) {
@@ -50,79 +50,86 @@ const signin = async (req, res) => {
                 accessToken: null, message: "Invalid Password!"
             });
         }
-        utilities.generateToken(user, (token) => {
-            res.status(200).json({
-                id: user.id,
-                email: user.email,
-                password: user.password,
-                name: user.name,
-                typeId: user.typeId,
-                reviewCount: user.reviewCount,
-                aprovedCouunt: user.aprovedCount,
-                workerNumber: user.workerNumber,
-                uploadCount: user.uploadCount,
-                photo: user.photo,
-                accessToken: token
-            });
-        })
+
+        const token = jwt.sign({user}, config.secret, { expiresIn: 8600 });
+
+        res.status(200).json({
+            id: user.id,
+            email: user.email,
+            password: user.password,
+            name: user.name,
+            typeId: user.typeId,
+            reviewCount: user.reviewCount,
+            aprovedCouunt: user.aprovedCount,
+            workerNumber: user.workerNumber,
+            uploadCount: user.uploadCount,
+            photo: user.photo,
+            accessToken: token
+        });
     }
     catch (err) { res.status(500).json({ message: err.message }); console.log(err); };
 };
 
 const listAll = (req, res) => {
     User.findAll()
-    .then((usersList) => {
-        if (usersList === null) {
-            res.status(404).json({message: '0 users found!'});
-        } else {
-            res.status(200).json(usersList);
-        }
-    })
-    .catch((error) => {
-        res.status(500).json(error);
-    }) 
+        .then((usersList) => {
+            if (usersList === null) {
+                res.status(404).json({ message: '0 users found!' });
+            } else {
+                res.status(200).json(usersList);
+            }
+        })
+        .catch((error) => {
+            res.status(500).json(error);
+        })
 }
 
 const listOne = (req, res) => {
-    User.findOne({where: {id: req.params.userId}})
-    .then((user) => {
-        if (user === null) {
-            res.status(404).json({message: `User with id ${req.params.userId} not found!`});
-        } else {
-            res.status(200).json(user);
-        }
-    })
-    .catch((error) => {
-        res.status(500).json(error);
-    })
+    User.findOne({ where: { id: req.params.userId } })
+        .then((user) => {
+            if (user === null) {
+                res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
+            } else {
+                res.status(200).json(user);
+            }
+        })
+        .catch((error) => {
+            res.status(500).json(error);
+        })
 }
 
 const remove = (req, res) => {
-    User.destroy({where: {id: req.params.userId}})
-    .then((num) => {
-        if (num == 1) {
-            res.status(200).json({ message: `User with id ${req.params.userId} removed with success!`});
-        } else {
-            res.status(404).json({message: `User with id ${req.params.userId} not found!`});
-        }
-    })
-    .catch(error => {
-        res.status(500).json(error);
-    })
+    User.destroy({ where: { id: req.params.userId } })
+        .then((num) => {
+            if (num == 1) {
+                res.status(200).json({ message: `User with id ${req.params.userId} removed with success!` });
+            } else {
+                res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
+            }
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        })
 }
 
 const update = (req, res) => {
-    User.update(req.body, {where: {id: req.params.userId}})
-    .then((num) => {
-        if (num == 1) {
-            res.status(200).json({message: `User with id ${req.params.userId} updated with success!`});
-        } else {
-            res.status(404).json({message: `User with id ${req.params.userId} not found!`});
-        }
-    })
-    .catch((error) => {
-        res.status(500).json(error)
-    })
+    console.log(req.loggedUserId, req.loggedUserType);
+    if (req.loggedUserId == req.params.userId) {
+        User.update(req.body, { where: { id: req.params.userId } })
+            .then((num) => {
+                if (num == 1) {
+                    res.status(200).json({ message: `User with id ${req.params.userId} updated with success!` });
+                } else {
+                    res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
+                }
+            })
+            .catch((error) => {
+                res.status(500).json(error)
+            })
+    } else {
+        res.status(400).json({ message: "Cannot update other users!" })
+    }
+
 }
 
 exports.signup = signup;

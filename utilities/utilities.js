@@ -1,25 +1,21 @@
 var jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
 
-const generateToken = (client_info, callback) => {
-    let token = jwt.sign({
-        data: client_info,
-    }, config.secret, {expiresIn: '24h'});
-    return callback(token); 
-}
+const validateToken = (req, res, next) => {
+    let token = req.headers.authorization;
 
-const validateToken = (token, callback) => {
-    if(!token) {
-        return callback(false); 
+    if (!token) {
+        return res.status(403).send({message: "No token provided!"});
     }
-    jwt.verify(token.replace('Bearer ', ''), config.secret, function(error, decoded) {
-        if(error) {
-            return callback(false);
-        } else {
-            return callback(true)
+
+    jwt.verify(token.replace('Bearer ', ''), config.secret, (error, decoded) => {
+        if (error) {
+            return res.status(401).send({message: "Invalid Token!"})
         }
+        req.loggedUserId = decoded.id
+        req.loggedUserType = decoded.type
+        console.log("decoded ",decoded)
     })
 }
 
-exports.generateToken = generateToken
-exports.validateToken = validateToken
+exports.validateToken = validateToken;
