@@ -51,7 +51,7 @@ const signin = async (req, res) => {
             });
         }
 
-        const token = jwt.sign({user}, config.secret, { expiresIn: 8600 });
+        const token = jwt.sign({ user }, config.secret, { expiresIn: 8600 });
 
         res.status(200).json({
             id: user.id,
@@ -99,21 +99,29 @@ const listOne = (req, res) => {
 }
 
 const remove = (req, res) => {
-    User.destroy({ where: { id: req.params.userId } })
-        .then((num) => {
-            if (num == 1) {
-                res.status(200).json({ message: `User with id ${req.params.userId} removed with success!` });
-            } else {
-                res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
-            }
-        })
-        .catch(error => {
-            res.status(500).json(error);
-        })
+    if (req.loggedUserType == 1) {
+        User.destroy({ where: { id: req.params.userId } })
+            .then((num) => {
+                if (num == 1) {
+                    res.status(200).json({ message: `User with id ${req.params.userId} removed with success!` });
+                } else {
+                    res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
+                }
+            })
+            .catch(error => {
+                res.status(500).json(error);
+            })
+    } else {
+        res.status(400).json({ message: "Only admin can remove users!" })
+    }
 }
 
 const update = (req, res) => {
-    console.log(req.loggedUserId, req.loggedUserType);
+    const newPassword = "";
+    if (req.body.password != null) {
+        newPassword = bcrypt.hashSync(req.body.password, 8);
+    }
+
     if (req.loggedUserId == req.params.userId) {
         User.update(req.body, { where: { id: req.params.userId } })
             .then((num) => {
@@ -129,7 +137,6 @@ const update = (req, res) => {
     } else {
         res.status(400).json({ message: "Cannot update other users!" })
     }
-
 }
 
 exports.signup = signup;

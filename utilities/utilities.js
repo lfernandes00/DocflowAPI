@@ -12,9 +12,9 @@ const validateToken = (req, res, next) => {
         if (error) {
             return res.status(401).send({message: "Invalid Token!"})
         }
-        req.loggedUserId = decoded.id
-        req.loggedUserType = decoded.type
-        console.log("decoded ",decoded)
+        req.loggedUserId = decoded.user.id
+        req.loggedUserType = decoded.user.typeId
+        console.log(decoded.user.id, decoded.user.typeId)
     })
 }
 

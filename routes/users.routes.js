@@ -56,6 +56,7 @@ router.route('/:userId').get(function(req, res) {
 router.route('/:userId').delete(function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
+        utilities.validateToken(req,res),
         controller.remove(req, res);
     } else {
         res.status(400).send(erros);
