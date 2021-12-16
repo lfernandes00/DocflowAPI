@@ -120,9 +120,12 @@ const update = (req, res) => {
     const newPassword = "";
     if (req.body.password != null) {
         newPassword = bcrypt.hashSync(req.body.password, 8);
+    } else {
+        newPassword = req.loggedUserPassword
     }
 
     if (req.loggedUserId == req.params.userId) {
+        req.body.password = newPassword; 
         User.update(req.body, { where: { id: req.params.userId } })
             .then((num) => {
                 if (num == 1) {

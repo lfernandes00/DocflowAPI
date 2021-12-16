@@ -1,5 +1,3 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const Model = require('../models/clients.model');
 const Client = Model.Client;
 
@@ -20,9 +18,8 @@ const listAll = (req, res) => {
 const listOne = (req, res) => {
     Client.findOne({where: {id: req.params.clientId}})
     .then((client) => {
-        console.log(client)
-        if (client == null) {
-            res.status({message: `Client with id ${req.params.clientId} not found!`});
+        if (client === null) {
+            res.status(404).json({message: `Client with id ${req.params.clientId} not found!`});
         } else {
             res.status(200).json(client)
         }

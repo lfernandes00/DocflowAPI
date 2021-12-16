@@ -16,7 +16,8 @@ Document.init({
     description: DataTypes.STRING,
     clientId: DataTypes.INTEGER,
     extension: DataTypes.STRING,
-    folderId: DataTypes.INTEGER
+    folderId: DataTypes.INTEGER,
+    deleted: DataTypes.TINYINT,
 }, { sequelize, modelName: 'document'})
 
 sequelize.sync().then().catch(error => {

@@ -14,6 +14,7 @@ const validateToken = (req, res, next) => {
         }
         req.loggedUserId = decoded.user.id
         req.loggedUserType = decoded.user.typeId
+        req.loggedUserPassword = decoded.user.password
         console.log(decoded.user.id, decoded.user.typeId)
     })
 }
