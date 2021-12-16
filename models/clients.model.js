@@ -9,7 +9,8 @@ class Client extends Model {}
 Client.init({
     NIF: DataTypes.INTEGER,
     name: DataTypes.STRING,
-    adress: DataTypes.STRING
+    adress: DataTypes.STRING,
+    deleted: DataTypes.TINYINT,
 }, { sequelize, modelName: 'client'})
 
 sequelize.sync().then().catch(error => {

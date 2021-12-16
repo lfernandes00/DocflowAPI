@@ -15,7 +15,8 @@ const create = (req, res) => {
         description: req.body.description,
         clientId: req.body.clientId,
         extension: req.body.extension,
-        folderId: req.body.folderId
+        folderId: req.body.folderId,
+        deleted: 0
     }
 
     Document.create(newDocument)

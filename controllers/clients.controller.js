@@ -33,7 +33,8 @@ const create = (req, res) => {
     const newClient = {
         NIF: req.body.NIF,
         name: req.body.name,
-        adress: req.body.adress
+        adress: req.body.adress,
+        deleted: 0
     }
 
     Client.create(newClient)

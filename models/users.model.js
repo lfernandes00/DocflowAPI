@@ -16,7 +16,8 @@ User.init({
     aprovedCount: DataTypes.INTEGER,
     workerNumber: DataTypes.INTEGER,
     uploadCount: DataTypes.INTEGER,
-    photo: DataTypes.STRING
+    photo: DataTypes.STRING,
+    deleted: DataTypes.TINYINT,
 }, { sequelize, modelName: 'user'})
 
 Document.Document.belongsTo(User);

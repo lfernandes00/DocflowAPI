@@ -23,7 +23,8 @@ const signup = async (req, res) => {
             aprovedCount: 0,
             workerNumber: req.body.workerNumber,
             uploadCount: 0,
-            photo: ""
+            photo: "",
+            deleted: 0
         });
         return res.status(201).json({ message: "User created with success!" });
 
@@ -38,7 +39,7 @@ const signin = async (req, res) => {
     try {
         let user = await User.findOne({ where: { email: req.body.email } });
 
-        if (!user)
+        if (!user || user.deleted == 1)
             return res.status(404).json({ message: "User Not found." });
         // tests a string (password in body) against a hash (password in database)
         const passwordIsValid = bcrypt.compareSync(
@@ -64,6 +65,7 @@ const signin = async (req, res) => {
             workerNumber: user.workerNumber,
             uploadCount: user.uploadCount,
             photo: user.photo,
+            deleted: user.deleted,
             accessToken: token
         });
     }
@@ -71,7 +73,7 @@ const signin = async (req, res) => {
 };
 
 const listAll = (req, res) => {
-    User.findAll()
+    User.findAll({where: {deleted: 0}})
         .then((usersList) => {
             if (usersList === null) {
                 res.status(404).json({ message: '0 users found!' });
@@ -100,24 +102,24 @@ const listOne = (req, res) => {
 
 const remove = (req, res) => {
     if (req.loggedUserType == 1) {
-        User.destroy({ where: { id: req.params.userId } })
-            .then((num) => {
-                if (num == 1) {
-                    res.status(200).json({ message: `User with id ${req.params.userId} removed with success!` });
-                } else {
-                    res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
-                }
-            })
-            .catch(error => {
-                res.status(500).json(error);
-            })
+        User.update(req.body,{where: {id: req.params.userId}})
+        .then((num) => {
+            if (num == 1) {
+                res.status(200).json({message: `User with id ${req.params.userId} removed with success!`});
+            } else {
+                res.status(404).json({message: `User with id ${req.params.userId} not found!`});
+            }
+        })
+        .catch((error) => {
+            res.status(500).json(error);
+        })
     } else {
         res.status(400).json({ message: "Only admin can remove users!" })
     }
 }
 
 const update = (req, res) => {
-    const newPassword = "";
+    var newPassword = "";
     if (req.body.password != null) {
         newPassword = bcrypt.hashSync(req.body.password, 8);
     } else {

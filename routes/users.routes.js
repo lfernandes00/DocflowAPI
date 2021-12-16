@@ -53,7 +53,7 @@ router.route('/:userId').get(function(req, res) {
     }
 })
 
-router.route('/:userId').delete(function(req, res) {
+router.route('/:userId').patch(function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         utilities.validateToken(req,res),
