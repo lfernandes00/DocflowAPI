@@ -18,7 +18,7 @@ const signup = async (req, res) => {
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
             name: req.body.name,
-            typeId: 1,
+            typeId: 2,
             reviewCount: 0,
             aprovedCount: 0,
             workerNumber: req.body.workerNumber,
