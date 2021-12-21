@@ -2,7 +2,7 @@ const Model = require('../models/clients.model');
 const Client = Model.Client;
 
 const listAll = (req, res) => {
-    Client.findAll()
+    Client.findAll({where: {deleted: 0}})
     .then((clientsList) => {
         if (clientsList.length == 0) {
             res.status(404).json({message: '0 clients found!'});
@@ -16,7 +16,7 @@ const listAll = (req, res) => {
 }
 
 const listOne = (req, res) => {
-    Client.findOne({where: {id: req.params.clientId}})
+    Client.findOne({where: {id: req.params.clientId, deleted: 0}})
     .then((client) => {
         if (client === null) {
             res.status(404).json({message: `Client with id ${req.params.clientId} not found!`});
@@ -46,23 +46,44 @@ const create = (req, res) => {
         })
 }
 
-// update
-
-const remove = (req, res) => {
-    Client.destroy({ where: { id: req.params.clientId } })
+const update = (req, res) => {
+    if (req.loggedUserType == 1) {
+        Client.update({where: {id: req.params.clientId, deleted: 0}})
         .then((num) => {
             if (num == 1) {
-                res.status(200).json({ message: `Client with id ${req.params.clientId} removed with success!` });
+                res.status(200).json({message: `Client with id ${req.params.clientId} updated with success!`});
             } else {
-                res.status(404).json({ message: 'Error removing the document!' });
+                res.status(400).json({message: 'Error while updating the Client!'});
             }
         })
         .catch((error) => {
             res.status(500).json(error);
         })
+    } else {
+        res.status(400).json({message: 'Only admin can update clients!'});
+    }
+}
+
+const remove = (req, res) => {
+    if (req.loggedUserType == 1) {
+        Client.update({where: {id: req.params.clientId, deleted: 0}})
+        .then((num) => {
+            if (num == 1) {
+                res.status(200).json({message: `Client with id ${req.params.clientId} removed with success!`});
+            } else {
+                res.status(400).json({message: 'Error while removing the Client!'});
+            }
+        })
+        .catch((error) => {
+            res.status(500).json(error);
+        })
+    } else {
+        res.status(400).json({message: 'Only admin can remove clients!'});
+    }
 }
 
 exports.listAll = listAll;
 exports.listOne = listOne;
 exports.create = create;
+exports.update = update;
 exports.remove = remove;

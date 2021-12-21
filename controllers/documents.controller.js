@@ -32,7 +32,8 @@ const listById = (req, res) => {
     Document.findOne(
         {
             where: {
-                id: req.params.documentId
+                id: req.params.documentId,
+                deleted: 0
             },
             include: {
                 model: User,
@@ -52,7 +53,7 @@ const listById = (req, res) => {
 };
 
 const listByType = (req, res) => {
-    Document.findAll({ where: { typeId: req.params.typeId } })
+    Document.findAll({ where: { typeId: req.params.typeId, deleted: 0 } })
         .then((documentsList) => {
             if (documentsList === null) {
                 res.status(404).json({ message: '0 documents found!' });
@@ -66,7 +67,7 @@ const listByType = (req, res) => {
 }
 
 const listByFolder = (req, res) => {
-    Document.findAll({ where: { folderId: req.params.folderId } })
+    Document.findAll({ where: { folderId: req.params.folderId, deleted: 0 } })
         .then((documentsList) => {
             if (documentsList === null) {
                 res.status(404).json({ message: '0 documents found!' });
@@ -80,7 +81,7 @@ const listByFolder = (req, res) => {
 }
 
 const listByUser = (req, res) => {
-    Document.findAll({ where: { userId: req.params.userId } })
+    Document.findAll({ where: { userId: req.params.userId, deleted: 0 } })
         .then((documentsList) => {
             if (documentsList === null) {
                 res.status(404).json({ message: '0 documents found!' });
@@ -94,7 +95,7 @@ const listByUser = (req, res) => {
 }
 
 const listByClient = (req, res) => {
-    Document.findAll({ where: { clientId: req.params.clientId } })
+    Document.findAll({ where: { clientId: req.params.clientId, deleted: 0 } })
         .then((documentsList) => {
             if (documentsList === null) {
                 res.status(404).json({ message: '0 documents found!' });
@@ -108,13 +109,13 @@ const listByClient = (req, res) => {
 }
 
 const update = (req, res) => {
-    Document.findOne({ where: { id: req.params.documentId } })
+    Document.findOne({ where: { id: req.params.documentId, deleted: 0 } })
         .then((document) => {
             if (document === null) {
                 res.status(404).json({ message: `Document with id ${req.params.documentId} not found!` });
             } else {
                 if (req.loggedUserId == document.userId) {
-                    Document.update(req.body, {where: {id: req.params.documentId}})
+                    Document.update(req.body, {where: {id: req.params.documentId, deleted: 0}})
                         .then((num) => {
                             if (num == 1) {
                                 res.status(200).json({ message: `Document with id ${req.params.documentId} updated with success!` });
@@ -136,22 +137,19 @@ const update = (req, res) => {
 }
 
 const remove = (req, res) => {
-    Document.findOne({where: {id: req.params.documentId}})
+    Document.findOne({where: {id: req.params.documentId, deleted: 0}})
     .then((document) => {
         if (document === null) {
             res.status(404).json({message: `Document with id ${req.params.documentId} not found!`});
         } else {
             if (req.loggedUserId == document.userId || req.loggedUserType == 1) {
-                Document.destroy({where: {id: req.params.documentId}})
+                Document.update(req.body, {where: {id: req.params.documentId, deleted: 0}})
                 .then((num) => {
                     if (num == 1) {
                         res.status(200).json({message: `Document with id ${req.params.documentId} removed with success!`});
                     } else {
-                        res.status(404).json({message: 'Error removing the document!'});
+                        res.status(400).json({message: 'Error while removing document!'});
                     }
-                })
-                .catch((error) => {
-                    res.status(500).json(error);
                 })
             } else {
                 res.status(400).json({message: 'Only admin or the user who created this document can remove it!'});

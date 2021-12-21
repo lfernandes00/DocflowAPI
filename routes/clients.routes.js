@@ -39,7 +39,16 @@ router.route('/').post([
     }
 })
 
-router.route('/:clientId').delete(function(req, res) {
+router.route('/:clientId').put(function(req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        controller.update(req, res);
+    } else {
+        res.status(400).send(erros);
+    }
+})
+
+router.route('/:clientId').patch(function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         controller.remove(req, res);

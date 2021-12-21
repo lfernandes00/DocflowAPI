@@ -87,7 +87,7 @@ const listAll = (req, res) => {
 }
 
 const listOne = (req, res) => {
-    User.findOne({ where: { id: req.params.userId } })
+    User.findOne({ where: { id: req.params.userId , deleted: 0} })
         .then((user) => {
             if (user === null) {
                 res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
@@ -102,7 +102,7 @@ const listOne = (req, res) => {
 
 const remove = (req, res) => {
     if (req.loggedUserType == 1) {
-        User.update(req.body,{where: {id: req.params.userId}})
+        User.update(req.body,{where: {id: req.params.userId, deleted: 0}})
         .then((num) => {
             if (num == 1) {
                 res.status(200).json({message: `User with id ${req.params.userId} removed with success!`});
@@ -128,7 +128,7 @@ const update = (req, res) => {
 
     if (req.loggedUserId == req.params.userId) {
         req.body.password = newPassword; 
-        User.update(req.body, { where: { id: req.params.userId } })
+        User.update(req.body, { where: { id: req.params.userId, deleted: 0 } })
             .then((num) => {
                 if (num == 1) {
                     res.status(200).json({ message: `User with id ${req.params.userId} updated with success!` });
