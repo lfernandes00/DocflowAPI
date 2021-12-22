@@ -20,7 +20,8 @@ User.init({
     deleted: DataTypes.TINYINT,
 }, { sequelize, modelName: 'user'})
 
-Document.Document.belongsTo(User);
+Document.Document.belongsTo(User, {foreignKey: 'userId'});
+User.hasMany(Document.Document, {foreignKey: 'userId'});
 
 sequelize.sync().then().catch(error => {
     console.log(error); 

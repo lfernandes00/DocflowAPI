@@ -3,13 +3,15 @@ const sequelize = new Sequelize.Sequelize('joaoferr_ESMAPP_21_22_GRP2', 'joaofer
     host: 'www.joaoferreira.eu', 
     dialect: 'mysql'
 })
-
+const Document = require('./documents.model');
 class Folder extends Model {}
 
 Folder.init({
     name: DataTypes.STRING,
     deleted: DataTypes.TINYINT
 }, { sequelize, modelName: 'folder'})
+
+Document.Document.belongsTo(Folder, {foreignKey: "folderId"});
 
 sequelize.sync().then().catch(error => {
     console.log(error); 

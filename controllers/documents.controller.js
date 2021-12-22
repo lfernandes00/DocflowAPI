@@ -2,6 +2,10 @@ const Model = require('../models/documents.model');
 const Document = Model.Document;
 const Model2 = require('../models/users.model');
 const User = Model2.User;
+const Model3 = require('../models/documentTypes.model');
+const DocumentType = Model3.DocumentType;
+const Model4 = require('../models/folders.model');
+const Folder = Model4.Folder;
 
 const create = (req, res) => {
     const newDocument = {
@@ -35,10 +39,17 @@ const listById = (req, res) => {
                 id: req.params.documentId,
                 deleted: 0
             },
-            include: {
-                model: User,
-                attributes: ['id']
-            }
+            include: [
+                {
+                    model: User, attributes: ['id']
+                },
+                {
+                    model: DocumentType, attributes: ['name']
+                },
+                {
+                    model: Folder, attributes: ['name']
+                }
+            ]
         })
         .then((document) => {
             if (document === null) {

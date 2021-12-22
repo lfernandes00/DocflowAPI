@@ -3,6 +3,7 @@ const sequelize = new Sequelize.Sequelize('joaoferr_ESMAPP_21_22_GRP2', 'joaofer
     host: 'www.joaoferreira.eu', 
     dialect: 'mysql'
 })
+
 class Document extends Model {}
 
 Document.init({
@@ -19,6 +20,8 @@ Document.init({
     folderId: DataTypes.INTEGER,
     deleted: DataTypes.TINYINT,
 }, { sequelize, modelName: 'document'})
+
+
 
 sequelize.sync().then().catch(error => {
     console.log(error); 

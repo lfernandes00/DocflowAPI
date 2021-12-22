@@ -1,5 +1,7 @@
 const Model = require('../models/documentTypes.model');
 const DocumentType = Model.DocumentType;
+const Model2 = require('../models/documents.model');
+const Document = Model2.Document;
 
 const create = (req, res) => {
     const newType = {
@@ -17,7 +19,11 @@ const create = (req, res) => {
 }
 
 const listAll = (req, res) => {
-    DocumentType.findAll({where: {deleted: 0}})
+    DocumentType.findAll({where: {deleted: 0}, 
+    include: {
+        model: Document, attributes: ['id']
+    }
+    })
     .then((typesList) => {
         if (typesList.length == 0) {
             res.status(404).json('0 Document Types found!');
@@ -33,37 +39,37 @@ const listAll = (req, res) => {
 // falta parte do utilizador com autorização 
 const update = (req, res) => {
     if (req.loggedUserType == 1) {
-        Folder.update(req.body,{where: {id: req.params.folderId, deleted: 0}})
+        DocumentType.update(req.body,{where: {id: req.params.documentTypeId, deleted: 0}})
         .then((num) => {
             if (num == 1) {
-                res.status(200).json({message: `Folder with id ${req.params.folderId} updated with success!`});
+                res.status(200).json({message: `Document Type with id ${req.params.documentTypeId} updated with success!`});
             } else {
-                res.status(400).json({message: 'Error while updating the Folder!'});
+                res.status(400).json({message: 'Error while updating the Document Type!'});
             }
         })
         .catch((error) => {
             res.status(500).json(error);
         })
     } else {
-        res.status(400).json({message: 'Only admin and users with access can update folders!'});
+        res.status(400).json({message: 'Only admin and users with access can update Document Types!'});
     }
 }
 
 const remove = (req, res) => {
     if (req.loggedUserType == 1) {
-        Folder.update(req.body,{where: {id: req.params.folderId, deleted: 0}})
+        DocumentType.update(req.body,{where: {id: req.params.documentTypeId, deleted: 0}})
         .then((num) => {
             if (num == 1) {
-                res.status(200).json({message: `Folder with id ${req.params.folderId} removed with success!`});
+                res.status(200).json({message: `Document Type with id ${req.params.documentTypeId} removed with success!`});
             } else {
-                res.status(400).json({message: 'Error while removing the Folder!'});
+                res.status(400).json({message: 'Error while removing the Document Type!'});
             }
         })
         .catch((error) => {
             res.status(500).json(error);
         })
     } else {
-        res.status(400).json({message: 'Only admin can remove folders!'});
+        res.status(400).json({message: 'Only admin can remove Document Types!'});
     }
 }
 

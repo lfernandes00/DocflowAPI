@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Model = require('../models/users.model');
 const User = Model.User;
+const Model2 = require('../models/documents.model');
+const Document = Model2.Document;
 const config = require('../config/auth.config');
 
 const signup = async (req, res) => {
@@ -18,7 +20,7 @@ const signup = async (req, res) => {
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
             name: req.body.name,
-            typeId: 2,
+            typeId: 1,
             reviewCount: 0,
             aprovedCount: 0,
             workerNumber: req.body.workerNumber,
@@ -73,7 +75,7 @@ const signin = async (req, res) => {
 };
 
 const listAll = (req, res) => {
-    User.findAll({where: {deleted: 0}})
+    User.findAll({ where: { deleted: 0 } })
         .then((usersList) => {
             if (usersList === null) {
                 res.status(404).json({ message: '0 users found!' });
@@ -87,7 +89,12 @@ const listAll = (req, res) => {
 }
 
 const listOne = (req, res) => {
-    User.findOne({ where: { id: req.params.userId , deleted: 0} })
+    User.findOne({
+        where: { id: req.params.userId, deleted: 0 },
+        include: {
+            model: Document, attributes: ['id']
+        }
+    })
         .then((user) => {
             if (user === null) {
                 res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
@@ -102,17 +109,17 @@ const listOne = (req, res) => {
 
 const remove = (req, res) => {
     if (req.loggedUserType == 1) {
-        User.update(req.body,{where: {id: req.params.userId, deleted: 0}})
-        .then((num) => {
-            if (num == 1) {
-                res.status(200).json({message: `User with id ${req.params.userId} removed with success!`});
-            } else {
-                res.status(404).json({message: `User with id ${req.params.userId} not found!`});
-            }
-        })
-        .catch((error) => {
-            res.status(500).json(error);
-        })
+        User.update(req.body, { where: { id: req.params.userId, deleted: 0 } })
+            .then((num) => {
+                if (num == 1) {
+                    res.status(200).json({ message: `User with id ${req.params.userId} removed with success!` });
+                } else {
+                    res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
+                }
+            })
+            .catch((error) => {
+                res.status(500).json(error);
+            })
     } else {
         res.status(400).json({ message: "Only admin can remove users!" })
     }
@@ -127,7 +134,7 @@ const update = (req, res) => {
     }
 
     if (req.loggedUserId == req.params.userId) {
-        req.body.password = newPassword; 
+        req.body.password = newPassword;
         User.update(req.body, { where: { id: req.params.userId, deleted: 0 } })
             .then((num) => {
                 if (num == 1) {

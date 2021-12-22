@@ -11,7 +11,6 @@ router.use((req, res, next) => {
 
 router.route('/').post([
     body('name').notEmpty().escape(),
-    body('userId').notEmpty().escape(),
     body('dataVencimento').notEmpty().escape(),
     body('typeId').notEmpty().escape(),
     body('version').notEmpty().escape(),
@@ -22,6 +21,7 @@ router.route('/').post([
 ],function(req, res) { 
     const errors = validationResult(req); 
     if(errors.isEmpty()) {
+        utilities.validateToken(req,res),
        controller.create(req, res); 
     } else {
         res.status(400).send(errors); 

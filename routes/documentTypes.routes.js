@@ -24,7 +24,7 @@ router.route('/').get(function(req, res) {
     }
 })
 
-router.route('/:folderId').put([
+router.route('/:documentTypeId').put([
     body('name').notEmpty().escape(),
 ],function(req, res) { 
     const errors = validationResult(req); 
@@ -36,7 +36,7 @@ router.route('/:folderId').put([
     }
 })
 
-router.route('/:folderId').patch([
+router.route('/:documentTypeId').patch([
     body('deleted').notEmpty().escape(),
 ],function(req, res) { 
     const errors = validationResult(req); 
