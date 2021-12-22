@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router(); 
 const { body, validationResult } = require('express-validator'); 
 const controller = require('../controllers/clients.controller'); 
+const utilities = require('../utilities/utilities');
 
 router.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers","x-access-token, Origin, Content-Type, Accept");
@@ -42,6 +43,7 @@ router.route('/').post([
 router.route('/:clientId').put(function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
+        utilities.validateToken(req,res),
         controller.update(req, res);
     } else {
         res.status(400).send(erros);
@@ -51,6 +53,7 @@ router.route('/:clientId').put(function(req, res) {
 router.route('/:clientId').patch(function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
+        utilities.validateToken(req,res),
         controller.remove(req, res);
     } else {
         res.status(400).send(erros);

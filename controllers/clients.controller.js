@@ -48,7 +48,7 @@ const create = (req, res) => {
 
 const update = (req, res) => {
     if (req.loggedUserType == 1) {
-        Client.update({where: {id: req.params.clientId, deleted: 0}})
+        Client.update(req.body,{where: {id: req.params.clientId, deleted: 0}})
         .then((num) => {
             if (num == 1) {
                 res.status(200).json({message: `Client with id ${req.params.clientId} updated with success!`});
@@ -66,7 +66,7 @@ const update = (req, res) => {
 
 const remove = (req, res) => {
     if (req.loggedUserType == 1) {
-        Client.update({where: {id: req.params.clientId, deleted: 0}})
+        Client.update(req.body,{where: {id: req.params.clientId, deleted: 0}})
         .then((num) => {
             if (num == 1) {
                 res.status(200).json({message: `Client with id ${req.params.clientId} removed with success!`});
