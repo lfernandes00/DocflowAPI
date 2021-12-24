@@ -84,7 +84,7 @@ const listAll = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -103,7 +103,7 @@ const listOne = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -118,7 +118,7 @@ const remove = (req, res) => {
                 }
             })
             .catch((error) => {
-                res.status(500).json(error);
+                res.status(500).json(error.toString());
             })
     } else {
         res.status(400).json({ message: "Only admin can remove users!" })
@@ -144,7 +144,7 @@ const update = (req, res) => {
                 }
             })
             .catch((error) => {
-                res.status(500).json(error)
+                res.status(500).json(error.toString())
             })
     } else {
         res.status(400).json({ message: "Cannot update other users!" })

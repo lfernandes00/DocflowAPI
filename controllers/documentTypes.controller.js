@@ -14,7 +14,7 @@ const create = (req, res) => {
             res.status(201).json({ message: `New Document Type created`, location: "/documentTypes" + data.id })
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -32,7 +32,7 @@ const listAll = (req, res) => {
         }
     })
     .catch((error) => {
-        res.status(500).json(error);
+        res.status(500).json(error.toString());
     }) 
 }
 
@@ -48,7 +48,7 @@ const update = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
     } else {
         res.status(400).json({message: 'Only admin and users with access can update Document Types!'});
@@ -66,7 +66,7 @@ const remove = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
     } else {
         res.status(400).json({message: 'Only admin can remove Document Types!'});

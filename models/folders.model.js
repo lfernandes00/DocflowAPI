@@ -4,6 +4,8 @@ const sequelize = new Sequelize.Sequelize('joaoferr_ESMAPP_21_22_GRP2', 'joaofer
     dialect: 'mysql'
 })
 const Document = require('./documents.model');
+const User = require('./users.model');
+const FolderAccess = require('./folderAccess.model')
 class Folder extends Model {}
 
 Folder.init({
@@ -12,6 +14,9 @@ Folder.init({
 }, { sequelize, modelName: 'folder'})
 
 Document.Document.belongsTo(Folder, {foreignKey: "folderId"});
+Folder.hasMany(Document.Document, {foreignKey: "folderId"})
+
+
 
 sequelize.sync().then().catch(error => {
     console.log(error); 

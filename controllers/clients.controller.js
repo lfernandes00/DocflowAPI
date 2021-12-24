@@ -11,7 +11,7 @@ const listAll = (req, res) => {
         }
     })
     .catch((error) => {
-        res.status(500).json(error);
+        res.status(500).json(error.toString());
     })
 }
 
@@ -25,7 +25,7 @@ const listOne = (req, res) => {
         }
     })
     .catch((error) => {
-        res.status(500).json(error);
+        res.status(500).json(error.toString());
     })
 }
 
@@ -42,7 +42,7 @@ const create = (req, res) => {
             res.status(201).json({ message: `New Client created`, location: "/clients" + data.id })
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -57,7 +57,7 @@ const update = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
     } else {
         res.status(400).json({message: 'Only admin can update clients!'});
@@ -75,7 +75,7 @@ const remove = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
     } else {
         res.status(400).json({message: 'Only admin can remove clients!'});

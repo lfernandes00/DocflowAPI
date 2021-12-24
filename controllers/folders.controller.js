@@ -2,6 +2,8 @@ const Model = require('../models/folders.model');
 const Folder = Model.Folder;
 const Model2 = require('../models/documents.model');
 const Document = Model2.Document;
+const Model3 = require('../models/users.model');
+const User = Model3.User;
 
 const create = (req, res) => {
     const newFolder = {
@@ -14,16 +16,21 @@ const create = (req, res) => {
             res.status(201).json({ message: `New Folder created`, location: "/folders" + data.id })
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
 const listAll = (req, res) => {
     Folder.findAll({
         where: { deleted: 0 },
-        include: {
+        include: [
+        {
             model: Document, attributes: ['name']
+        },
+        {
+            model: User, as: 'FolderAccess', attributes: ['id']
         }
+    ]
     })
         .then((foldersList) => {
             if (foldersList.length == 0) {
@@ -33,7 +40,8 @@ const listAll = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            console.log(error)
+            res.status(500).json(error.toString());
         })
 }
 
@@ -49,7 +57,7 @@ const update = (req, res) => {
                 }
             })
             .catch((error) => {
-                res.status(500).json(error);
+                res.status(500).json(error.toString());
             })
     } else {
         res.status(400).json({ message: 'Only admin and users with access can update folders!' });
@@ -67,7 +75,7 @@ const remove = (req, res) => {
                 }
             })
             .catch((error) => {
-                res.status(500).json(error);
+                res.status(500).json(error.toString());
             })
     } else {
         res.status(400).json({ message: 'Only admin can remove folders!' });

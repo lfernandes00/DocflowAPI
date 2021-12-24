@@ -28,7 +28,7 @@ const create = (req, res) => {
             res.status(201).json({ message: `New activity created`, location: "/documents" + data.id })
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -59,7 +59,7 @@ const listById = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         });
 };
 
@@ -73,7 +73,7 @@ const listByType = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -87,7 +87,7 @@ const listByFolder = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -101,7 +101,7 @@ const listByUser = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -115,7 +115,7 @@ const listByClient = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -135,7 +135,7 @@ const update = (req, res) => {
                             }
                         })
                         .catch((error) => {
-                            res.status(500).json(error);
+                            res.status(500).json(error.toString());
                         })
                 } else {
                     res.status(400).json({ message: 'Cannot update documents created by other users!' });
@@ -143,7 +143,7 @@ const update = (req, res) => {
             }
         })
         .catch((error) => {
-            res.status(500).json(error);
+            res.status(500).json(error.toString());
         })
 }
 
@@ -162,13 +162,16 @@ const remove = (req, res) => {
                         res.status(400).json({message: 'Error while removing document!'});
                     }
                 })
+                .catch((error) => {
+                    res.status(500).json(error.toString())
+                })
             } else {
                 res.status(400).json({message: 'Only admin or the user who created this document can remove it!'});
             }
         }
     })
     .catch((error) => {
-        res.status(500).json(error);
+        res.status(500).json(error.toString());
     })
 }
 
