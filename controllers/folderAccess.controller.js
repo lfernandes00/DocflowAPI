@@ -5,7 +5,8 @@ const create = (req, res) => {
     const newFolderAccess = {
         userId: req.body.userId,
         folderId: req.body.folderId,
-        access: 0
+        access: 0,
+        color: 0
     }
 
     FolderAccess.create(newFolderAccess)
@@ -17,11 +18,11 @@ const create = (req, res) => {
         })
 }
 const update = (req, res) => {
-    if (req.loggedUserType == 1) {
-        FolderAccess.update(req.body, { where: { id: req.params.folderAccessId, deleted: 0 } })
+    if (req.loggedUserType == 1 || req.loggedUserId == req.params.userId) {
+        FolderAccess.update(req.body, { where: { userId: req.loggedUserId, folderId: req.params.folderId} })
             .then((num) => {
                 if (num == 1) {
-                    res.status(200).json({ message: `FolderAccess with id ${req.params.folderAccessId} updated with success!` });
+                    res.status(200).json({ message: `FolderAccess updated with success!` });
                 } else {
                     res.status(400).json({ message: 'Error while updating the FolderAccess!' });
                 }

@@ -16,8 +16,9 @@ router.route('/').post([
     }
 })
 
-router.route('/:folderId').put([
-    body('userId').notEmpty().escape(),
+router.route('/:folderId/:userId').put([
+    body('access').notEmpty().escape(),
+    body('color').notEmpty().escape()
 ],function(req, res) { 
     const errors = validationResult(req); 
     if(errors.isEmpty()) {

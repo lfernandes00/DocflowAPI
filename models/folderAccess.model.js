@@ -10,7 +10,8 @@ class FolderAccess extends Model {}
 FolderAccess.init({
     userId: DataTypes.INTEGER,
     folderId: DataTypes.INTEGER,
-    access: DataTypes.TINYINT 
+    access: DataTypes.TINYINT,
+    color: DataTypes.TINYINT,
 }, { sequelize, modelName: 'folderAccess'})
 
 // Folder.Folder.belongsToMany(User.User, {through: FolderAccess, as: 'FolderAccess'});
