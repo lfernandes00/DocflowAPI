@@ -6,7 +6,8 @@ const create = (req, res) => {
         userId: req.body.userId,
         documentId: req.body.documentId,
         type: req.body.type,
-        pending: 0
+        pending: 0,
+        time: ""
     }
 
     Request.create(newRequest)
@@ -19,35 +20,63 @@ const create = (req, res) => {
 }
 
 const listAll = (req, res) => {
-    Request.findAll({where: {userId: req.loggedUserId}})
-    .then((requestsList) => {
-        if (requestsList.length == 0) {
-            res.status(404).json({message: "0 Requests found!"});
-        } else {
-            res.status(200).json(requestsList);
-        }
-    })
-    .catch((error) => {
-        res.status(500).json(error.toString());
-    })
+    Request.findAll({ where: { userId: req.loggedUserId } })
+        .then((requestsList) => {
+            if (requestsList.length == 0) {
+                res.status(404).json({ message: "0 Requests found!" });
+            } else {
+                res.status(200).json(requestsList);
+            }
+        })
+        .catch((error) => {
+            res.status(500).json(error.toString());
+        })
 }
 
 const update = (req, res) => {
-    if (req.loggedUserId == req.params.userId) {
-        Request.update(req.body, { where: { userId: req.loggedUserId, documentId: req.params.documentId} })
-            .then((num) => {
-                if (num == 1) {
-                    res.status(200).json({ message: `Request updated with success!` });
+    let currentdate = new Date();
+    let date2 = currentdate.getFullYear() + "/"
+        + (currentdate.getMonth() + 1) + "/"
+        + currentdate.getDate() + " "
+        + currentdate.getHours() + ":"
+        + currentdate.getMinutes() + ":"
+        + currentdate.getSeconds();
+
+    Request.findOne({ where: { userId: req.loggedUserId, documentId: req.params.documentId } })
+        .then((request) => {
+            if (request === null) {
+                res.status(404).json({ message: `Request not found!` });
+            } else {
+                if (req.loggedUserId == request.userId) {
+                    let createDate = request.createdAt
+                    let date1 = createDate.getFullYear() + "/"
+                        + (createDate.getMonth() + 1) + "/"
+                        + createDate.getDate() + " "
+                        + createDate.getHours() + ":"
+                        + createDate.getMinutes() + ":"
+                        + createDate.getSeconds();
+
+                    let time = Math.abs(new Date(date1) - new Date(date2)) // difference in milliseconds
+                    req.body.time = time.toString();
+                    Request.update(req.body, { where: { userId: req.loggedUserId, documentId: req.params.documentId } })
+                        .then((num) => {
+                            if (num == 1) {
+                                res.status(200).json({ message: `Request updated with success!` });
+                            } else {
+                                res.status(400).json({ message: 'Error while updating document!' });
+                            }
+                        })
+                        .catch((error) => {
+                            res.status(500).json(error.toString())
+                        })
                 } else {
-                    res.status(400).json({ message: 'Error while updating the Request!' });
+                    res.status(400).json({ message: 'Only user can remove his request!' });
                 }
-            })
-            .catch((error) => {
-                res.status(500).json(error.toString());
-            })
-    } else {
-        res.status(400).json({ message: 'Only user of request can update request!' });
-    }
+            }
+        })
+        .catch((error) => {
+            res.status(500).json(error.toString());
+        })
 }
 
 exports.create = create;

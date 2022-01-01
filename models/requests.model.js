@@ -10,6 +10,7 @@ Request.init({
     documentId: DataTypes.INTEGER,
     type: DataTypes.TINYINT,
     pending: DataTypes.TINYINT,
+    time: DataTypes.STRING
 }, { sequelize, modelName: 'request'})
 
 
