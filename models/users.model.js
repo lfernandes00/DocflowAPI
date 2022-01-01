@@ -6,6 +6,7 @@ const sequelize = new Sequelize.Sequelize('joaoferr_ESMAPP_21_22_GRP2', 'joaofer
 const Document = require('./documents.model');
 const Folder = require('./folders.model');
 const FolderAccess = require('./folderAccess.model');
+const Request = require('./requests.model');
 
 class User extends Model {}
 
@@ -24,6 +25,9 @@ User.init({
 
 Document.Document.belongsTo(User, {foreignKey: 'userId'});
 User.hasMany(Document.Document, {foreignKey: 'userId'});
+
+Document.Document.belongsToMany(User, {through: Request.Request, as: 'Request'});
+User.belongsToMany(Document.Document, {through: Request.Request, as: 'Request'});
 
 Folder.Folder.belongsToMany(User, {through: FolderAccess.FolderAccess, as: 'FolderAccess'});
 User.belongsToMany(Folder.Folder, {through: FolderAccess.FolderAccess, as: 'FolderAccess'});

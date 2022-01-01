@@ -91,9 +91,13 @@ const listAll = (req, res) => {
 const listOne = (req, res) => {
     User.findOne({
         where: { id: req.params.userId, deleted: 0 },
-        include: {
+        include: [{
             model: Document, attributes: ['id']
+        },
+        {
+            model: Document, as: "Request", attributes: ["id"]
         }
+    ]
     })
         .then((user) => {
             if (user === null) {

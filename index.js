@@ -7,6 +7,7 @@ const clientRouter = require('./routes/clients.routes');
 const folderRouter = require('./routes/folders.routes');
 const documentTypeRouter = require('./routes/documentTypes.routes');
 const folderAccessRouter = require('./routes/folderAccess.routes');
+const requestRouter = require('./routes/requests.routes');
 const utilities = require('./utilities/utilities');
 
 app.use(express.json());
@@ -14,8 +15,9 @@ app.use('/users', userRouter);
 app.use('/documents', documentRouter);
 app.use('/clients', clientRouter);
 app.use('/folders', folderRouter);
-app.use('/documentTypes', documentTypeRouter)
-app.use('/folderAccess', folderAccessRouter)
+app.use('/documentTypes', documentTypeRouter);
+app.use('/folderAccess', folderAccessRouter);
+app.use('/requests', requestRouter);
 
 app.listen(port, () => {
     console.log('Server Running')
