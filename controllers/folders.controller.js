@@ -4,6 +4,8 @@ const Model2 = require('../models/documents.model');
 const Document = Model2.Document;
 const Model3 = require('../models/users.model');
 const User = Model3.User;
+const accessFolder = require('../models/folderAccess.model');
+const FolderAccess = accessFolder.FolderAccess;
 
 const create = (req, res) => {
     const newFolder = {
@@ -45,23 +47,32 @@ const listAll = (req, res) => {
         })
 }
 
-// falta parte do utilizador com autorização 
 const update = (req, res) => {
-    if (req.loggedUserType == 1) {
-        Folder.update(req.body, { where: { id: req.params.folderId, deleted: 0 } })
-            .then((num) => {
-                if (num == 1) {
-                    res.status(200).json({ message: `Folder with id ${req.params.folderId} updated with success!` });
-                } else {
-                    res.status(400).json({ message: 'Error while updating the Folder!' });
-                }
-            })
-            .catch((error) => {
-                res.status(500).json(error.toString());
-            })
-    } else {
-        res.status(400).json({ message: 'Only admin and users with access can update folders!' });
-    }
+    FolderAccess.findOne({where: {folderId: req.params.folderId, userId: req.loggedUserId}})
+    .then((folderAccess) => {
+        if (folderAccess === null) {
+            res.status(404).json({message: `Folder with id ${req.params.folderId} not found!`});
+        } else {
+            if (folderAccess.access == 1 || req.loggedUserType == 1) {
+                Folder.update(req.body, {where: {id: req.params.folderId, deleted: 0}})
+                .then((num) => {
+                    if (num == 1) {
+                        res.status(200).json({message: `Folder with id ${req.params.folderId} updated with success!`});
+                    } else {
+                        res.status(400).json({message: 'Error while updating the folder!'});
+                    }
+                })
+                .catch((error) => {
+                    res.status(500).json(error.toString());
+                })
+            } else {
+                res.status(400).json({message: 'Only admins and authorized users can update folders!'});
+            }
+        }
+    }).
+    catch((error) => {
+        res.status(500).json(error.toString());
+    })
 }
 
 const remove = (req, res) => {

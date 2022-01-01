@@ -19,7 +19,7 @@ const create = (req, res) => {
 }
 const update = (req, res) => {
     if (req.loggedUserType == 1 || req.loggedUserId == req.params.userId) {
-        FolderAccess.update(req.body, { where: { userId: req.loggedUserId, folderId: req.params.folderId} })
+        FolderAccess.update(req.body, { where: { userId: req.params.userId, folderId: req.params.folderId} })
             .then((num) => {
                 if (num == 1) {
                     res.status(200).json({ message: `FolderAccess updated with success!` });
