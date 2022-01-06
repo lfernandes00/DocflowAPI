@@ -133,12 +133,10 @@ const update = (req, res) => {
     var newPassword = "";
     if (req.body.password != null) {
         newPassword = bcrypt.hashSync(req.body.password, 8);
-    } else {
-        newPassword = req.loggedUserPassword
-    }
+        req.body.password = newPassword;
+    } 
 
     if (req.loggedUserId == req.params.userId) {
-        req.body.password = newPassword;
         User.update(req.body, { where: { id: req.params.userId, deleted: 0 } })
             .then((num) => {
                 if (num == 1) {
