@@ -12,12 +12,12 @@ router.use((req, res, next) => {
 router.route('/').post([
     body('name').notEmpty().escape(),
     body('dataVencimento').notEmpty().escape(),
-    body('typeId').notEmpty().escape(),
-    body('version').notEmpty().escape(),
+    body('typeId').isNumeric().notEmpty().escape(),
+    body('version').isNumeric().notEmpty().escape(),
     body('description').notEmpty().escape(),
-    body('clientId').notEmpty().escape(),
+    body('clientId').isNumeric().notEmpty().escape(),
     body('extension').notEmpty().escape(),
-    body('folderId').notEmpty().escape()
+    body('folderId').isNumeric().notEmpty().escape()
 ],function(req, res) { 
     const errors = validationResult(req); 
     if(errors.isEmpty()) {
@@ -83,7 +83,9 @@ router.route('/:documentId').put(function(req, res) {
     }
 })
 
-router.route('/:documentId').patch(function(req, res) {
+router.route('/:documentId').patch([
+    body('deleted').isNumeric().notEmpty().escape()
+],function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         utilities.validateToken(req,res),

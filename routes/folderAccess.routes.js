@@ -5,8 +5,10 @@ const controller = require('../controllers/folderAccess.controller');
 const utilities = require('../utilities/utilities');
 
 router.route('/').post([
-    body('userId').notEmpty().escape(),
-    body('folderId').notEmpty().escape(),
+    body('userId').isNumeric().notEmpty().escape(),
+    body('folderId').isNumeric().notEmpty().escape(),
+    body('access').isNumeric().notEmpty().escape(),
+    body('color').isNumeric().notEmpty().escape()
 ],function(req, res) { 
     const errors = validationResult(req); 
     if(errors.isEmpty()) {
@@ -17,8 +19,8 @@ router.route('/').post([
 })
 
 router.route('/:folderId/:userId').put([
-    body('access').notEmpty().escape(),
-    body('color').notEmpty().escape()
+    body('access').isNumeric().notEmpty().escape(),
+    body('color').isNumeric().notEmpty().escape()
 ],function(req, res) { 
     const errors = validationResult(req); 
     if(errors.isEmpty()) {

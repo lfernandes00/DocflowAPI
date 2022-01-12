@@ -63,14 +63,14 @@ const update = (req, res) => {
                             if (num == 1) {
                                 res.status(200).json({ message: `Request updated with success!` });
                             } else {
-                                res.status(400).json({ message: 'Error while updating document!' });
+                                res.status(400).json({ message: 'Error while updating request!' });
                             }
                         })
                         .catch((error) => {
                             res.status(500).json(error.toString())
                         })
                 } else {
-                    res.status(400).json({ message: 'Only user can remove his request!' });
+                    res.status(400).json({ message: 'Only the user who created this request can remove it!' });
                 }
             }
         })

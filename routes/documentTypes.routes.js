@@ -37,7 +37,7 @@ router.route('/:documentTypeId').put([
 })
 
 router.route('/:documentTypeId').patch([
-    body('deleted').notEmpty().escape(),
+    body('deleted').isNumeric().notEmpty().escape(),
 ],function(req, res) { 
     const errors = validationResult(req); 
     if(errors.isEmpty()) {

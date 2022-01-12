@@ -28,7 +28,7 @@ router.route('/:clientId').get(function(req, res) {
 })
 
 router.route('/').post([
-    body('NIF').notEmpty().escape(),
+    body('NIF').isNumeric().notEmpty().escape(),
     body('name').notEmpty().escape(),
     body('adress').notEmpty().escape()
 ],function(req, res) { 
@@ -50,7 +50,9 @@ router.route('/:clientId').put(function(req, res) {
     }
 })
 
-router.route('/:clientId').patch(function(req, res) {
+router.route('/:clientId').patch([
+    body('deleted').isNumeric().notEmpty().escape()
+],function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         utilities.validateToken(req,res),
