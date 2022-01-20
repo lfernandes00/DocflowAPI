@@ -6,9 +6,7 @@ const utilities = require('../utilities/utilities');
 
 router.route('/').post([
     body('userId').notEmpty().escape(),
-    body('desc').notEmpty().escape(),
-    body('date').notEmpty().escape(),
-    body('deleted').isNumeric().notEmpty().escape(),
+    body('desc').notEmpty().escape()
 ],function(req, res) { 
     const errors = validationResult(req); 
     if(errors.isEmpty()) {
@@ -35,7 +33,7 @@ router.route('/:notificationId').patch([
         utilities.validateToken(req,res),
         controller.remove(req, res);
     } else {
-        res.status(400).send(erros);
+        res.status(400).send(errors);
     }
 })
 
