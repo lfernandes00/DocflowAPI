@@ -92,10 +92,10 @@ const listOne = (req, res) => {
     User.findOne({
         where: { id: req.params.userId, deleted: 0 },
         include: [{
-            model: Document, attributes: ['id']
+            model: Document, attributes: ['id', "extension"]
         },
         {
-            model: Document, as: "Request", attributes: ["id"]
+            model: Document, as: "Request", attributes: ["id", "extension"]
         }
     ]
     })
