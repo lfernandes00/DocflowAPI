@@ -4,6 +4,8 @@ const sequelize = new Sequelize.Sequelize('joaoferr_ESMAPP_21_22_GRP2', 'joaofer
     dialect: 'mysql'
 })
 
+const Document = require('./documents.model')
+
 class Client extends Model {}
 
 Client.init({
@@ -12,6 +14,9 @@ Client.init({
     adress: DataTypes.STRING,
     deleted: DataTypes.TINYINT,
 }, { sequelize, modelName: 'client'})
+
+Document.Document.belongsTo(Client, {foreignKey: 'clientId'})
+Client.hasMany(Document.Document, {foreignKey: 'clientId'})
 
 sequelize.sync().then().catch(error => {
     console.log(error); 

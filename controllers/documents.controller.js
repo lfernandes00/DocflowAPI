@@ -6,6 +6,8 @@ const Model3 = require('../models/documentTypes.model');
 const DocumentType = Model3.DocumentType;
 const Model4 = require('../models/folders.model');
 const Folder = Model4.Folder;
+const Model5 = require('../models/clients.model');
+const Client = Model5.Client;
 
 const create = (req, res) => {
     const newDocument = {
@@ -41,13 +43,16 @@ const listById = (req, res) => {
             },
             include: [
                 {
-                    model: User, attributes: ['id']
+                    model: User, attributes: ['id', 'name']
                 },
                 {
                     model: DocumentType, attributes: ['name']
                 },
                 {
                     model: Folder, attributes: ['name']
+                },
+                {
+                    model: Client, attributes: ['name']
                 }
             ]
         })
