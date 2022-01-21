@@ -91,6 +91,16 @@ router.route('/:userId').get(function(req, res) {
     }
 })
 
+router.route('/requests').get(function(req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        utilities.validateToken(req,res),
+        controller.listOne(req, res);
+    } else {
+        res.status(400).send(erros);
+    }
+})
+
 /**
  * @route PATCH /users/{id}
  * @group Users

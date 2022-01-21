@@ -111,6 +111,26 @@ const listOne = (req, res) => {
         })
 }
 
+const listOneRequests = (req, res) => {
+    User.findOne({
+        where: { id: req.loggedUserId, deleted: 0 },
+        include:
+        {
+            model: Document, as: "Request"
+        }
+    })
+        .then((user) => {
+            if (user === null) {
+                res.status(404).json({ message: `User with id ${req.params.userId} not found!` });
+            } else {
+                res.status(200).json(user);
+            }
+        })
+        .catch((error) => {
+            res.status(500).json(error.toString());
+        })
+}
+
 const remove = (req, res) => {
     if (req.loggedUserType == 1) {
         User.update(req.body, { where: { id: req.params.userId, deleted: 0 } })
@@ -157,5 +177,6 @@ exports.signup = signup;
 exports.signin = signin;
 exports.listAll = listAll;
 exports.listOne = listOne;
+exports.listOneRequests = listOneRequests;
 exports.remove = remove;
 exports.update = update;
