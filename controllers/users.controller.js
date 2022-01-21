@@ -113,7 +113,7 @@ const listOne = (req, res) => {
 
 const listOneRequests = (req, res) => {
     User.findOne({
-        where: { id: req.loggedUserId, deleted: 0 },
+        where: { id: req.params.userId, deleted: 0 },
         include:
         {
             model: Document, as: "Request"
