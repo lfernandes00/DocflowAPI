@@ -94,7 +94,7 @@ router.route('/:userId').get(function(req, res) {
 router.route('/:userId/requests').get(function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
-        controller.listOne(req, res);
+        controller.listOneRequests(req, res);
     } else {
         res.status(400).send(erros);
     }
