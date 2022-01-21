@@ -53,6 +53,9 @@ const listById = (req, res) => {
                 },
                 {
                     model: Client, attributes: ['name']
+                },
+                {
+                    model: User, as: "Request", attributes: ["id"]
                 }
             ]
         })
