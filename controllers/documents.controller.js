@@ -134,7 +134,7 @@ const update = (req, res) => {
                 res.status(404).json({ message: `Document with id ${req.params.documentId} not found!` });
             } else {
                 if (req.loggedUserId == document.userId) {
-                    Document.update(req.body, {where: {id: req.params.documentId, deleted: 0}})
+                    Document.update(req.body, { where: { id: req.params.documentId, deleted: 0 } })
                         .then((num) => {
                             if (num == 1) {
                                 res.status(200).json({ message: `Document with id ${req.params.documentId} updated with success!` });
@@ -155,32 +155,46 @@ const update = (req, res) => {
         })
 }
 
-const remove = (req, res) => {
-    Document.findOne({where: {id: req.params.documentId, deleted: 0}})
-    .then((document) => {
-        if (document === null) {
-            res.status(404).json({message: `Document with id ${req.params.documentId} not found!`});
-        } else {
-            if (req.loggedUserId == document.userId || req.loggedUserType == 1) {
-                Document.update(req.body, {where: {id: req.params.documentId, deleted: 0}})
-                .then((num) => {
-                    if (num == 1) {
-                        res.status(200).json({message: `Document with id ${req.params.documentId} removed with success!`});
-                    } else {
-                        res.status(400).json({message: 'Error while removing document!'});
-                    }
-                })
-                .catch((error) => {
-                    res.status(500).json(error.toString())
-                })
+const updateFromRequest = (req, res) => {
+    Document.update(req.body, { where: { id: req.params.documentId, deleted: 0 } })
+        .then((num) => {
+            if (num == 1) {
+                res.status(200).json({ message: `Document with id ${req.params.documentId} updated with success!` });
             } else {
-                res.status(400).json({message: 'Only admin or the user who created this document can remove it!'});
+                res.status(404).json({ message: 'Error while updating document!' })
             }
-        }
-    })
-    .catch((error) => {
-        res.status(500).json(error.toString());
-    })
+        })
+        .catch((error) => {
+            res.status(500).json(error.toString());
+        })
+}
+
+const remove = (req, res) => {
+    Document.findOne({ where: { id: req.params.documentId, deleted: 0 } })
+        .then((document) => {
+            if (document === null) {
+                res.status(404).json({ message: `Document with id ${req.params.documentId} not found!` });
+            } else {
+                if (req.loggedUserId == document.userId || req.loggedUserType == 1) {
+                    Document.update(req.body, { where: { id: req.params.documentId, deleted: 0 } })
+                        .then((num) => {
+                            if (num == 1) {
+                                res.status(200).json({ message: `Document with id ${req.params.documentId} removed with success!` });
+                            } else {
+                                res.status(400).json({ message: 'Error while removing document!' });
+                            }
+                        })
+                        .catch((error) => {
+                            res.status(500).json(error.toString())
+                        })
+                } else {
+                    res.status(400).json({ message: 'Only admin or the user who created this document can remove it!' });
+                }
+            }
+        })
+        .catch((error) => {
+            res.status(500).json(error.toString());
+        })
 }
 
 exports.create = create;
@@ -190,4 +204,5 @@ exports.listByFolder = listByFolder;
 exports.listByUser = listByUser;
 exports.listByClient = listByClient;
 exports.update = update;
+exports.updateFromRequest = updateFromRequest;
 exports.remove = remove;

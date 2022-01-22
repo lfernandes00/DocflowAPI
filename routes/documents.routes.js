@@ -83,6 +83,15 @@ router.route('/:documentId').put(function(req, res) {
     }
 })
 
+router.route('/:documentId/requests').patch(function(req, res) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        controller.updateFromRequest(req, res);
+    } else {
+        res.status(400).send(erros);
+    }
+})
+
 router.route('/:documentId').patch([
     body('deleted').isNumeric().notEmpty().escape()
 ],function(req, res) {
