@@ -7,7 +7,8 @@ const create = (req, res) => {
         documentId: req.body.documentId,
         type: req.body.type,
         pending: 0,
-        time: ""
+        time: "",
+        avaliation: 0
     }
 
     Request.create(newRequest)

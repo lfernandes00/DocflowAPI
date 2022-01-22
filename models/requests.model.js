@@ -10,7 +10,8 @@ Request.init({
     documentId: DataTypes.INTEGER,
     type: DataTypes.TINYINT,
     pending: DataTypes.TINYINT,
-    time: DataTypes.STRING
+    time: DataTypes.STRING,
+    avaliation: DataTypes.TINYINT
 }, { sequelize, modelName: 'request'})
 
 
