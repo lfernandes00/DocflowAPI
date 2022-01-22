@@ -25,13 +25,19 @@ const create = (req, res) => {
         deleted: 0
     }
 
-    Document.create(newDocument)
+    if (req.loggedUserId != null) {
+        Document.create(newDocument)
         .then((data) => {
             res.status(201).json({ message: `New activity created`, location: "/documents" + data.id })
         })
         .catch((error) => {
             res.status(500).json(error.toString());
         })
+    } else {
+        res.status(400).json({message: "User not found!"});
+    }
+
+    
 }
 
 const listById = (req, res) => {
