@@ -57,8 +57,11 @@ const update = (req, res) => {
                         + createDate.getMinutes() + ":"
                         + createDate.getSeconds();
 
-                    let time = Math.abs(new Date(date1) - new Date(date2)) // difference in milliseconds
-                    req.body.time = time.toString();
+                    let mill = Math.abs(new Date(date1) - new Date(date2)) // difference in milliseconds
+                    let sec = mill / 1000;
+                    let min = sec / 60;
+                    let hour = min / 60;
+                    req.body.time = hour + " horas " + min + " min";
                     Request.update(req.body, { where: { userId: req.loggedUserId, documentId: req.params.documentId } })
                         .then((num) => {
                             if (num == 1) {
