@@ -58,10 +58,23 @@ const update = (req, res) => {
                         + createDate.getSeconds();
 
                     let mill = Math.abs(new Date(date1) - new Date(date2)) // difference in milliseconds
-                    let sec = mill / 1000;
-                    let min = sec / 60;
-                    let hour = min / 60;
-                    req.body.time = hour + " horas " + min + " min";
+                    var seconds = (mill / 1000).toFixed(0);
+                    var minutes = Math.floor(seconds / 60);
+                    var hours = "";
+                    if (minutes > 59) {
+                        hours = Math.floor(minutes / 60);
+                        hours = (hours >= 10) ? hours : "0" + hours;
+                        minutes = minutes - (hours * 60);
+                        minutes = (minutes >= 10) ? minutes : "0" + minutes;
+                    }
+
+                    seconds = Math.floor(seconds % 60);
+                    seconds = (seconds >= 10) ? seconds : "0" + seconds;
+                    if (hours != "") {
+                        req.body.time = hours + " horas " + minutes + " min";
+                    }
+                    req.body.time =  minutes + " min " + seconds + " sec";
+                    
                     Request.update(req.body, { where: { userId: req.loggedUserId, documentId: req.params.documentId } })
                         .then((num) => {
                             if (num == 1) {
