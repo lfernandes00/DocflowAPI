@@ -71,9 +71,9 @@ const update = (req, res) => {
                     seconds = Math.floor(seconds % 60);
                     seconds = (seconds >= 10) ? seconds : "0" + seconds;
                     if (hours != "") {
-                        req.body.time = hours + " horas " + minutes + " min";
+                        req.body.time = hours.round() + " horas " + minutes.round() + " min";
                     }
-                    req.body.time =  minutes + " min " + seconds + " sec";
+                    req.body.time =  minutes.round() + " min " + seconds.round() + " sec";
                     
                     Request.update(req.body, { where: { userId: req.loggedUserId, documentId: req.params.documentId } })
                         .then((num) => {
