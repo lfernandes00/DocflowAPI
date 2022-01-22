@@ -75,7 +75,12 @@ const signin = async (req, res) => {
 };
 
 const listAll = (req, res) => {
-    User.findAll({ where: { deleted: 0 } })
+    User.findAll({
+        where: { deleted: 0 },
+        include: {
+            model: Document, as: "Request", attributes: ["id"]
+        }
+    })
         .then((usersList) => {
             if (usersList === null) {
                 res.status(404).json({ message: '0 users found!' });
@@ -97,7 +102,7 @@ const listOne = (req, res) => {
         {
             model: Document, as: "Request", attributes: ["id", "extension"]
         }
-    ]
+        ]
     })
         .then((user) => {
             if (user === null) {
@@ -154,7 +159,7 @@ const update = (req, res) => {
     if (req.body.password != null) {
         newPassword = bcrypt.hashSync(req.body.password, 8);
         req.body.password = newPassword;
-    } 
+    }
 
     if (req.loggedUserId == req.params.userId) {
         User.update(req.body, { where: { id: req.params.userId, deleted: 0 } })
