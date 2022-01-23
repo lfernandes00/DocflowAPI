@@ -25,7 +25,7 @@ const signup = async (req, res) => {
             aprovedCount: 0,
             workerNumber: req.body.workerNumber,
             uploadCount: 0,
-            photo: "",
+            photo: "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png",
             deleted: 0
         });
         return res.status(201).json({ message: "User created with success!" });

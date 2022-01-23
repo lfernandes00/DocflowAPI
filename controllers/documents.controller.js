@@ -20,7 +20,7 @@ const create = (req, res) => {
         value: req.body.value,
         description: req.body.description,
         clientId: req.body.clientId,
-        extension: req.body.extension,
+        extension: "https://img.r7.com/images/documentos-vazados-eua-ovnis-12022019171625471",
         folderId: req.body.folderId,
         deleted: 0
     }
