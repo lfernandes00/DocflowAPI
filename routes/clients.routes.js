@@ -48,7 +48,7 @@ router.route('/:clientId').get(function(req, res) {
 /**
  * @route POST /clients
  * @group Clients
- * @param {object} object.body - Client's Credentials - eg. {"name": "Faturas"} 
+ * @param {object} object.body - Client's Credentials - eg. {"NIF": "123456789";"name": "João, "adress":"Rua da Oliveira", "deleted":"0"} 
  * @returns {object} 201 - New Client created with success
  * @returns {Error} 400 - Unexpected error
  * @returns {Error} 500 - Internal Server Error
@@ -70,7 +70,7 @@ router.route('/').post([
 /**
  * @route PUT /clients/{id}
  * @group Clients
- * @param {object} object.body - Client's Credentials - eg. {"pending": 1}   //VER AQUI
+ * @param {object} object.body - Client's Credentials - eg. {"name": "Ricardo"}   
  * @param {string} id.path - Client id
  * @returns {object} 200 - Client updated with success
  * @returns {Error} 400 - Error while updating the Client!

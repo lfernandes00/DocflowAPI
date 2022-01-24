@@ -7,7 +7,7 @@ const utilities = require('../utilities/utilities');
 /**
  * @route POST /folderAccess
  * @group Folder Access
- * @param {object} object.body - Folder Access's Credentials - eg. {"name": "Faturas"} 
+ * @param {object} object.body - Folder Access's Credentials - eg. {"userId": 1,"folderId": 1 } 
  * @returns {object} 201 - New FolderAccess created
  * @returns {Error} 400 - Unexpected error
  * @returns {Error} 500 - Internal Server Error

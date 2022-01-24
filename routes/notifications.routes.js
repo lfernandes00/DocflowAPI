@@ -7,7 +7,7 @@ const utilities = require('../utilities/utilities');
 /**
  * @route POST /notifications
  * @group Notifications
- * @param {object} object.body - Notifications's Credentials - eg. {"name": "Faturas"} 
+ * @param {object} object.body - Notifications's Credentials - eg. {"userId": 1,"desc": "Tem um novo documento para rever"} 
  * @returns {object} 201 - New Notification Created
  * @returns {Error} 400 - Unexpected error
  * @returns {Error} 500 - Internal Server Error

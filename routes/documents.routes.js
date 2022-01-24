@@ -12,7 +12,7 @@ router.use((req, res, next) => {
 /**
  * @route POST /Documents
  * @group Documents
- * @param {object} object.body - Documents's Credentials - eg. {"name": "Faturas"} 
+ * @param {object} object.body - Documents's Credentials - eg. {"name": "Luís","userId":2 ,"dataVencimento": "24/12/2021","typeId": 1,"version": 1,"value": 1,"description": "Fatura da Continental","clientId": 3,"folderId": 1} 
  * @returns {object} 201 - New document created with success
  * @returns {Error} 400 - User not found!
  * @returns {Error} 401 - Invalid Token
@@ -133,7 +133,7 @@ router.route('/client/:clientId').get(function(req, res) {
 /**
  * @route PUT /Documents/{id}
  * @group Documents
- * @param {object} object.body - Document's Credentials - eg. {"pending": 1}   //VER AQUI
+ * @param {object} object.body - Document's Credentials - eg. {"pending": 1}   
  * @param {string} id.path - Document id
  * @returns {object} 200 - Document updated with success!
  * @returns {Error} 400 - Cannot update documents created by other users!
