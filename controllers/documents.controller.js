@@ -28,7 +28,7 @@ const create = (req, res) => {
     if (req.loggedUserId != null) {
         Document.create(newDocument)
         .then((data) => {
-            res.status(201).json({ message: `New activity created`, location: data.id })
+            res.status(201).json({ message: `New document created`, location: data.id })
         })
         .catch((error) => {
             res.status(500).json(error.toString());

@@ -67,6 +67,20 @@ router.route('/').post([
     }
 })
 
+/**
+ * @route PUT /clients/{id}
+ * @group Clients
+ * @param {object} object.body - Client's Credentials - eg. {"pending": 1}   //VER AQUI
+ * @param {string} id.path - Client id
+ * @returns {object} 200 - Client updated with success
+ * @returns {Error} 400 - Error while updating the Client!
+ * @returns {Error} 400 - Only admin can update clients!
+ * @returns {Error} 401 - Invalid Token
+ * @returns {Error} 403 - No token provided
+ * @returns {Error} 500 - Internal Server Error
+ * @security Bearer
+ */
+
 router.route('/:clientId').put(function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
@@ -76,6 +90,20 @@ router.route('/:clientId').put(function(req, res) {
         res.status(400).send(erros);
     }
 })
+
+/**
+ * @route PATCH /clients/{id}
+ * @group Clients
+ * @param {object} object.body - Client's Credentials - eg. {"deleted": 1}
+ * @param {string} id.path - Client id.
+ * @returns {object} 200 - Client updated with success
+ * @returns {Error} 400 - Error while updating the Client!
+ * @returns {Error} 400 - Only admin can update clients!
+ * @returns {Error} 401 - Invalid Token
+ * @returns {Error} 403 - No token provided
+ * @returns {Error} 500 - Internal Server Error
+ * @security Bearer
+ */
 
 router.route('/:clientId').patch([
     body('deleted').isNumeric().notEmpty().escape()
