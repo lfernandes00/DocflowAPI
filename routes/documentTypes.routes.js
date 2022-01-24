@@ -6,7 +6,7 @@ const utilities = require('../utilities/utilities');
 
 /**
  * @route POST /documentType
- * @group Document Tyopes
+ * @group Document Types
  * @param {object} object.body - Document Types's Credentials - eg. {"name": "Faturas"} 
  * @returns {object} 201 - New Document Type created
  * @returns {Error} 400 - Unexpected error
@@ -44,7 +44,7 @@ router.route('/').get(function(req, res) {
 
 /**
  * @route PUT /documentType/{id}
- * @group Document Type
+ * @group Document Types
  * @param {object} object.body - Document type's Credentials - eg. {"pending": 1}   //VER AQUI
  * @param {string} id.path - Document Type id
  * @returns {object} 200 - Document Type updated with success!
@@ -71,7 +71,7 @@ router.route('/:documentTypeId').put([
 
 /**
  * @route PATCH /documentType/{id}
- * @group Document Type
+ * @group Document Types
  * @param {object} object.body - Document Type's Credentials - eg. {"deleted": 1}
  * @param {string} id.path - Document Type
  * @returns {object} 200 - Document Type updated with success!

@@ -30,7 +30,7 @@ router.route('/').post([
 
 /**
  * @route GET /requests
- * @group Request
+ * @group Requests
  * @returns {object} 200 - An array with all requests
  * @returns {Error} 404 - 0 requests found
  * @returns {Error} 401 - Invalid Token

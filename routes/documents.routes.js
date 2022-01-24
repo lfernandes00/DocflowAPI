@@ -60,7 +60,7 @@ router.route('/:documentId').get(function(req, res) {
 
 /**
  * @route GET /type/{id}
- * @group Type
+ * @group Types
  * @returns {object} 200 - Document list by type
  * @returns {Error} 404 - Documents not found!
  * @returns {Error} 400 - Unexpected error
@@ -78,7 +78,7 @@ router.route('/type/:typeId').get(function(req, res) {
 
 /**
  * @route GET /folder/{id}
- * @group Folder
+ * @group Folders
  * @returns {object} 200 - Document list by folder
  * @returns {Error} 404 - 0 Documents found!
  * @returns {Error} 400 - Unexpected error
@@ -96,7 +96,7 @@ router.route('/folder/:folderId').get(function(req, res) {
 
 /**
  * @route GET /user/{id}
- * @group User
+ * @group Users
  * @returns {object} 200 - Document list by user
  * @returns {Error} 404 - Documents not found!
  * @returns {Error} 400 - Unexpected error
@@ -114,7 +114,7 @@ router.route('/user/:userId').get(function(req, res) {
 
 /**
  * @route GET /client/{id}
- * @group Client
+ * @group Clients
  * @returns {object} 200 - Document list by client
  * @returns {Error} 404 - Documents not found!
  * @returns {Error} 400 - Unexpected error
