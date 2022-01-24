@@ -46,6 +46,21 @@ router.route('/').get(function(req, res) {
     }
 })
 
+/**
+ * @route PUT /folders/{id}
+ * @group Folders
+ * @param {object} object.body - Folder's Credentials - eg. {"pending": 1}   //VER AQUI
+ * @param {string} id.path - Folder id
+ * @returns {object} 200 - Folder updated with success
+ * @returns {Error} 400 - Error while updating the folder!
+ * @returns {Error} 400 - Only admins and authorized users can update folders!
+ * @returns {Error} 401 - Invalid Token
+ * @returns {Error} 403 - No token provided
+ * @returns {Error} 404 - Folder not found!
+ * @returns {Error} 500 - Internal Server Error
+ * @security Bearer
+ */
+
 router.route('/:folderId').put([
     body('name').notEmpty().escape(),
 ],function(req, res) { 
@@ -57,6 +72,21 @@ router.route('/:folderId').put([
         res.status(400).send(errors); 
     }
 })
+
+/**
+ * @route PATCH /folders/{id}
+ * @group Folders
+ * @param {object} object.body - Folder's Credentials - eg. {"deleted": 1}
+ * @param {string} id.path - Folder id.
+ * @returns {object} 200 - Folder updated with success
+ * @returns {Error} 400 - Error while updating the folder!
+ * @returns {Error} 400 - Only admins and authorized users can update folders!
+ * @returns {Error} 401 - Invalid Token
+ * @returns {Error} 403 - No token provided
+ * @returns {Error} 404 - Folder not found
+ * @returns {Error} 500 - Internal Server Error
+ * @security Bearer
+ */
 
 router.route('/:folderId').patch([
     body('deleted').notEmpty().escape(),

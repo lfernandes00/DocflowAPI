@@ -9,6 +9,15 @@ router.use((req, res, next) => {
     next()
 })
 
+/**
+ * @route GET /clients
+ * @group Clients
+ * @returns {object} 200 - An array with all clients
+ * @returns {Error} 404 - 0 clients found
+ * @returns {Error} 400 - Unexpected error
+ * @returns {Error} 500 - Internal Server Error
+ */
+
 router.route('/').get(function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
@@ -18,6 +27,15 @@ router.route('/').get(function(req, res) {
     }
 })
 
+/**
+ * @route GET /clients/{id}
+ * @group Clients
+ * @returns {object} 200 - Client
+ * @returns {Error} 404 - Client not found!
+ * @returns {Error} 400 - Unexpected error
+ * @returns {Error} 500 - Internal Server Error
+ */
+
 router.route('/:clientId').get(function(req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
@@ -26,6 +44,15 @@ router.route('/:clientId').get(function(req, res) {
         res.status(400).send(erros);
     }
 })
+
+/**
+ * @route POST /clients
+ * @group Clients
+ * @param {object} object.body - Client's Credentials - eg. {"name": "Faturas"} 
+ * @returns {object} 201 - New Client created with success
+ * @returns {Error} 400 - Unexpected error
+ * @returns {Error} 500 - Internal Server Error
+ */
 
 router.route('/').post([
     body('NIF').isNumeric().notEmpty().escape(),
