@@ -11,6 +11,10 @@ const notificationRouter = require('./routes/notifications.routes');
 const requestRouter = require('./routes/requests.routes');
 const utilities = require('./utilities/utilities');
 
+const expressSwagger = require('express-swagger-generator')(app);
+const options = require('./swagger.config');
+expressSwagger(options);
+
 app.use(express.json());
 app.use('/users', userRouter);
 app.use('/documents', documentRouter);
