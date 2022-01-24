@@ -60,7 +60,7 @@ router.route('/:documentId').get(function(req, res) {
 
 /**
  * @route GET /type/{id}
- * @group Types
+ * @group Document Types
  * @returns {object} 200 - Document list by type
  * @returns {Error} 404 - Documents not found!
  * @returns {Error} 400 - Unexpected error
